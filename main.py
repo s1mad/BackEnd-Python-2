@@ -27,33 +27,81 @@ def is_even(number):
     """Функция для проверки четности числа."""
     return number % 2 == 0
 
-
-while True:
-    num1 = input("Введите первое число: ")
-    num2 = input("Введите второе число: ")
-
-    try:
-        num1 = int(num1)
-        num2 = int(num2)
-    except ValueError:
-        print("Пожалуйста, вводите только числа.")
-        continue
-
-    print(f"{num1} + {num2} = {add(num1, num2)}")
-    print(f"{num1} - {num2} = {subtract(num1, num2)}")
-    print(f"{num1} * {num2} = {multiply(num1, num2)}")
-    print(f"{num1} / {num2} = {divide(num1, num2)}")
-
-    if is_even(num1):
-        print(f"Число {num1} четное.")
+def check_conditions(first_number, second_number):
+    """Пример работы с условными операторами or, and, not, и вложенными if."""
+    if first_number > 0 and second_number > 0:
+        print("Оба числа положительные.")
+        if first_number > 100 and second_number > 100:
+            print("Оба числа больше 100.")
+        else:
+            if first_number > 100:
+                print(f"Число {first_number} больше 100.")
+            if second_number > 100:
+                print(f"Число {second_number} больше 100.")
+    elif first_number < 0 or second_number < 0:
+        print("Хотя бы одно из чисел отрицательное.")
+        if first_number < 0:
+            if first_number < -100:
+                print(f"Число {first_number} очень маленькое (меньше -100).")
+            else:
+                print(f"Число {first_number} отрицательное, но больше -100.")
+        if second_number < 0:
+            if second_number < -100:
+                print(f"Число {second_number} очень маленькое (меньше -100).")
+            else:
+                print(f"Число {second_number} отрицательное, но больше -100.")
+    if not is_even(first_number):
+        print(f"Число {first_number} нечетное (используем not).")
     else:
-        print(f"Число {num1} нечетное.")
+        print(f"Число {first_number} четное (используем not).")
 
-    if is_even(num2):
-        print(f"Число {num2} четное.")
-    else:
-        print(f"Число {num2} нечетное.")
+def calculate_with_choice(first_number, second_number, selected_operation: str):
+    """Пример работы с конструкцией match-case."""
+    match selected_operation:
+        case "сложение":
+            return f"Результат: {add(first_number, second_number)}"
+        case "вычитание":
+            return f"Результат: {subtract(first_number, second_number)}"
+        case "умножение":
+            return f"Результат: {multiply(first_number, second_number)}"
+        case "деление":
+            return f"Результат: {divide(first_number, second_number)}"
+        case _:
+            return "Неизвестная операция"
 
-    repeat = input("Хотите выполнить вычисления еще раз? (да/нет): ")
-    if repeat.lower() != "да":
-        break
+
+if __name__ == "__main__":
+    while True:
+        num_list = []
+        for _ in range(2):
+            num = input("Введите число: ")
+            try:
+                num = int(num)
+                num_list.append(num)
+            except ValueError:
+                print("Пожалуйста, вводите только числа.")
+                break
+
+        number_1, num2 = num_list[0], num_list[1]
+
+        # Запрос на выбор операции
+        print("Выберите операцию: сложение, вычитание, умножение, деление")
+        operation = input("Введите операцию: ").strip().lower()
+
+        # Использование match-case
+        result = calculate_with_choice(number_1, num2, operation)
+        print(result)
+
+        # Проверка условий
+        check_conditions(number_1, num2)
+
+        # Пример цикла в цикле: выводим таблицу умножения для каждого числа
+        for i in range(1, 6):
+            for num in num_list:
+                print(f"{num} * {i} = {num * i}")
+            print()  # Разделение строк для удобства
+
+        # Спрашиваем, нужно ли повторить
+        repeat = input("Хотите выполнить вычисления еще раз? (да/нет): ")
+        if repeat.lower() != "да":
+            break
